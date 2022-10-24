@@ -3,7 +3,13 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags: []
+  tags:
+  - Projectile
+  - RespawnBox
+  - FinishLine
+  - Ground
+  - Grape
+  - NPC
   layers:
   - Default
   - TransparentFX

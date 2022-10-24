@@ -6,6 +6,12 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Scenes/SampleScene.unity
+    path: Assets/Scenes/FoxGrapes.unity
     guid: 2cda990e2423bbf4892e6590ba056729
+  - enabled: 1
+    path: Assets/Scenes/MouseLion.unity
+    guid: e8b78b10a5aa3bd4ab733cbd19514569
+  - enabled: 1
+    path: Assets/Scenes/TortoiseHare.unity
+    guid: fba1880ee76770643a8cc483587a79d2
   m_configObjects: {}
