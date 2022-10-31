@@ -7,41 +7,41 @@ using TMPro;
 public class PlayerBehaviour : MonoBehaviour
 {
     private Rigidbody2D rb2d;
-    public Vector2 jumpForce = new Vector2(0, 400); //jump force of the player
-    private bool onGround = false; //boolean used to check if the player is on the ground
-    public float speed = 10;
-    private float grapeCount = 0;
-    public Vector2 respawnLocation = new Vector2(0, 0);
+    public Vector2 jumpForce = new Vector2(0, 400); //base jump force of the player, changes with each level
+    private bool onGround = false; //checks if the player is on the ground
+    public float speed = 10; //base speed of the player, changes with each level
+    private float grapeCount = 0; //number of grapes you eat
+    public Vector2 respawnLocation = new Vector2(0, 0); //a saved location for the player to respawn to
     public TMP_Text GrapeText;
     public GameObject RaceText;
     public GameObject NPCText;
-    private bool canInteract = false; //boolean used to check if the player can interact with something
-    // Start is called before the first frame update
+    private bool canInteract = false; //checks if the player can interact with something
+
     void Start()
     {
-        rb2d = GetComponent<Rigidbody2D>();
+        rb2d = GetComponent<Rigidbody2D>(); //gets the rigidbody of the player object and saves it
     }
 
-    // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown("space") && onGround == true)
+        if (Input.GetKeyDown("space") && onGround == true) //if player is on ground and space is pressed
         {
-            onGround = false;
-            rb2d.AddForce(jumpForce);
+            onGround = false; //player is no longer on the ground and unable to jump
+            rb2d.AddForce(jumpForce); //player jumps
         }
         float xMove = Input.GetAxis("Horizontal");
 
         Vector2 newPos = gameObject.transform.position;
 
         newPos.x += xMove * speed * Time.deltaTime;
-        newPos.x = Mathf.Clamp(newPos.x, -8.1f, 25.0f);
+        //newPos.x = Mathf.Clamp(newPos.x, -8.1f, 25.0f);
+        //change this ^ so that it's different for every level
 
-        gameObject.transform.position = newPos;
+        gameObject.transform.position = newPos;  //moves the player horizontally
 
-        if (Input.GetKeyDown("v") && canInteract == true)
+        if (Input.GetKeyDown("v") && canInteract == true) //if v is pressed and is in the trigger of an NPC
         {
-            NPCText.SetActive(true);
+            NPCText.SetActive(true); //activates the NPC dialogue
         }
         //debug scene changes
         if (Input.GetKeyDown("1"))
@@ -59,11 +59,11 @@ public class PlayerBehaviour : MonoBehaviour
     }
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        onGround = true;
+        onGround = true; //when the player is colliding with solid ground, they are able to jump
     }
     private void OnCollisionExit2D(Collision2D collision)
     {
-        onGround = false;
+        onGround = false; //when the player leaves ground, they are unable to jump
     }
     private void OnTriggerEnter2D(Collider2D collision)
     {
@@ -109,6 +109,7 @@ public class PlayerBehaviour : MonoBehaviour
         if (collision.transform.tag == "NPC")
         {
             NPCText.SetActive(false);
+            canInteract = false;
         }
     }
 }
