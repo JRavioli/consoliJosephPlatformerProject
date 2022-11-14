@@ -15,6 +15,8 @@ public class PlayerBehaviour : MonoBehaviour
     public TMP_Text GrapeText;
     public GameObject RaceText;
     public GameObject NPCText;
+    public GameObject FenceText;
+    public GameObject Fence;
     private bool canInteract = false; //checks if the player can interact with something
 
     void Start()
@@ -56,6 +58,10 @@ public class PlayerBehaviour : MonoBehaviour
         {
             SceneManager.LoadScene("MouseLion");
         }
+        if (Input.GetKeyDown("4"))
+        {
+            SceneManager.LoadScene("WolfSheep");
+        }
     }
     private void OnCollisionEnter2D(Collision2D collision)
     {
@@ -73,7 +79,7 @@ public class PlayerBehaviour : MonoBehaviour
         }
         if (collision.transform.tag == "Projectile")
         {
-            Destroy(collision.gameObject); //No projectile will stay on screen when it hits the player
+            //Destroy(collision.gameObject); //No projectile will stay on screen when it hits the player
             float knockBack = Random.Range(-2, 2); //picks out of four numbers, -2, -1, 0, and 1
             if (knockBack == 0)
             {
@@ -103,6 +109,15 @@ public class PlayerBehaviour : MonoBehaviour
         {
             canInteract = true;
         }
+        if (collision.transform.tag == "Fence")
+        {
+            FenceText.SetActive(true);
+        }
+        if (collision.transform.tag == "Hide")
+        {
+            Destroy(collision.gameObject);
+            Destroy(Fence);
+        }
     }
     private void OnTriggerExit2D(Collider2D collision)
     {
@@ -111,5 +126,12 @@ public class PlayerBehaviour : MonoBehaviour
             NPCText.SetActive(false);
             canInteract = false;
         }
+        if (collision.transform.tag == "Fence")
+        {
+            FenceText.SetActive(false);
+        }
     }
 }
+
+//stuff for dialogue
+//TextGrab
