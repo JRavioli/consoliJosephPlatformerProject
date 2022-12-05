@@ -5,8 +5,8 @@ using UnityEngine;
 public class StickBehaviour : MonoBehaviour
 {
     const int fallSpeed = 7;
-    public float topY;
-    public float botY;
+    public float TopY;
+    public float BotY;
     // Start is called before the first frame update
     void Start()
     {
@@ -17,9 +17,9 @@ public class StickBehaviour : MonoBehaviour
     void Update()
     {
         transform.position -= new Vector3(0, fallSpeed * Time.deltaTime);
-        if (transform.position.y <= botY)
+        if (transform.position.y <= BotY)
         {
-            transform.position = new Vector3(transform.position.x, topY);
+            transform.position = new Vector3(transform.position.x, TopY);
         }
     }
     private void OnTriggerEnter2D(Collider2D collision)

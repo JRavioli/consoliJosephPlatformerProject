@@ -9,8 +9,24 @@ public class MainMenuController : MonoBehaviour
     {
         Application.targetFrameRate = 60;
     }
-    public void StartGame()
+    public void LoadFox()
     {
-        SceneManager.LoadScene(1);
+        SceneManager.LoadScene("FoxGrapes");
+    }
+    public void LoadTortoise()
+    {
+        SceneManager.LoadScene("TortoiseHare");
+    }
+    public void LoadMouse()
+    {
+        SceneManager.LoadScene("MouseLion");
+    }
+    public void LoadWolf()
+    {
+        SceneManager.LoadScene("WolfSheep");
+    }
+    public void ExitGame()
+    {
+        Application.Quit();
     }
 }
