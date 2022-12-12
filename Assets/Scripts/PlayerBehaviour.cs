@@ -22,7 +22,16 @@ public class PlayerBehaviour : MonoBehaviour
     public Textbox LevelsTextbox;
     public GameObject WinScreen;
     public GameObject GoBackText;
-    public NPCBehaviour lion;
+    public NPCBehaviour EndNPC1;
+    public NPCBehaviour EndNPC2;
+    public AudioSource MyAudioSource;
+    public AudioClip MunchSound;
+    public AudioClip StickSound;
+    public AudioClip GruntSound;
+    public AudioClip SuitUp;
+    public Animator MyAnimator;
+    public SpriteRenderer MySpriteRenderer;
+    private bool levelDone = false;
     void Start()
     {
         rb2d = GetComponent<Rigidbody2D>(); //gets the rigidbody of the player object and saves it
@@ -32,10 +41,35 @@ public class PlayerBehaviour : MonoBehaviour
     {
         if (Input.GetKeyDown("space") && onGround == true) //if player is on ground and space is pressed
         {
-            onGround = false; //player is no longer on the ground and unable to jump
-            rb2d.AddForce(JumpForce); //player jumps
+            if (levelDone == false)
+            {
+                onGround = false; //player is no longer on the ground and unable to jump
+                rb2d.AddForce(JumpForce); //player jumps
+            }
+            else if (levelDone == true)
+            {
+                levelDone = false;
+                SceneManager.LoadScene("MainMenu");
+            }
         }
         float xMove = Input.GetAxis("Horizontal");
+
+        if (xMove == 0)
+        {
+            MyAnimator.SetBool("IsWalking", false);
+        }
+        else if (xMove != 0)
+        {
+            MyAnimator.SetBool("IsWalking", true);
+        }
+        if (xMove < 0)
+        {
+            MySpriteRenderer.flipX = true;
+        }
+        else if (xMove > 0)
+        {
+            MySpriteRenderer.flipX = false;
+        }
 
         Vector2 newPos = gameObject.transform.position;
 
@@ -57,21 +91,21 @@ public class PlayerBehaviour : MonoBehaviour
                 NPCText.SetActive(true); //activates the NPC dialogue
                 LevelsTextbox.TextSquare.text = CurrentNPC.DialogueLines[CurrentNPC.WhichText];
                 CurrentNPC.WhichText += 1;
-                if (CurrentNPC == lion && CurrentNPC.WhichText == 10)
+                if (CurrentNPC == EndNPC1 && CurrentNPC.WhichText == 10)
                 {
                     SceneManager.LoadScene("MouseLion2");
                 }
-                if (CurrentNPC == lion && CurrentNPC.WhichText == 4)
+                if (CurrentNPC == EndNPC2 && CurrentNPC.WhichText == 4)
                 {
                     SceneManager.LoadScene("MainMenu");
                 }
             }
         }
-        if (Input.GetKeyDown("Escape"))
+        if (Input.GetKeyDown(KeyCode.Escape))
         {
             Application.Quit();
         }
-        if (Input.GetKeyDown("R"))
+        if (Input.GetKeyDown("r"))
         {
             SceneManager.LoadScene("MainMenu");
         }
@@ -103,6 +137,7 @@ public class PlayerBehaviour : MonoBehaviour
                 knockBack = -1; //gives both -1 and 1 an equal chance of being the knockBack value
             }
             rb2d.AddForce(new Vector2(400 * knockBack, 100)); //pushes the player to the left or right when being hit with a projectile
+            MyAudioSource.PlayOneShot(StickSound);
         }
         if (collision.transform.tag == "RespawnBox")
         {
@@ -113,18 +148,17 @@ public class PlayerBehaviour : MonoBehaviour
             Destroy(collision.gameObject);
             grapeCount += 1;
             GrapeText.text = "Grapes: " + grapeCount;
+            MyAudioSource.PlayOneShot(MunchSound);
             if (grapeCount == 5)
             {
                 WinScreen.SetActive(true);
-                //Make the game wait a bit before going to the title screen
-                SceneManager.LoadScene("MainMenu");
+                levelDone = true;
             }
         }
         if (collision.transform.tag == "FinishLine")
         {
             RaceText.SetActive(true);
-            //make the game wait before going back
-            SceneManager.LoadScene("MainMenu");
+            levelDone = true;
         }
         if (collision.transform.tag == "NPC")
         {
@@ -140,19 +174,17 @@ public class PlayerBehaviour : MonoBehaviour
             Destroy(collision.gameObject);
             Destroy(Fence);
             GoBackText.SetActive(true);
+            MyAnimator.SetBool("HasClothing", true);
+            MyAudioSource.PlayOneShot(SuitUp);
         }
         if (collision.transform.tag == "TextGoByeBye")
         {
             GoBackText.SetActive(false);
         }
-        if (collision.transform.tag == "Sheep")
-        {
-            //make it so that there's a quick dialogue box before this
-            SceneManager.LoadScene("MainMenu");
-        }
         if (collision.transform.tag == "Hunter")
         {
             rb2d.AddForce(new Vector2(-400, 100));
+            MyAudioSource.PlayOneShot(GruntSound);
         }
     }
     private void OnTriggerExit2D(Collider2D collision)

@@ -13,7 +13,6 @@ TagManager:
   - Fence
   - Hide
   - TextGoByeBye
-  - Sheep
   - Hunter
   layers:
   - Default
@@ -49,9 +48,15 @@ TagManager:
   - 
   - 
   m_SortingLayers:
+  - name: Background
+    uniqueID: 3249224719
+    locked: 0
   - name: Default
     uniqueID: 0
     locked: 0
   - name: Grape
     uniqueID: 1915592221
+    locked: 0
+  - name: TextStayAboveBox
+    uniqueID: 1189755771
     locked: 0
